@@ -1,0 +1,5 @@
+# Linux user crontab example. Review provider rate limits before enabling.
+# Replace paths with your checkout and absolute executable paths from command -v.
+# Choose a released registry digest instead of the local :dev build for production.
+# The line is deliberately commented: first verify one real update manually.
+# */15 * * * * cd /absolute/path/dynamic-dns-updater && /usr/bin/flock -n local/update.lock /usr/bin/docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges --env-file .env ghcr.io/vitofico/dynamic-dns-updater/updater:dev >> local/update.log 2>&1
