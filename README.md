@@ -4,7 +4,7 @@ A small, one-shot container for updating DuckDNS, FreeDNS, Dynu, or deSEC/dedyn 
 
 Source: [vitofico/dynamic-dns-updater](https://github.com/vitofico/dynamic-dns-updater).
 Container: `ghcr.io/vitofico/dynamic-dns-updater/updater`.
-An optional [Kubernetes Homelab Kit integration](https://github.com/vitofico/kubernetes-homelab-kit/blob/feat/companion-tool-images-20261104/docs/dynamic-dns.md) is prepared on the companion-image branch and is pending merge.
+The optional [Kubernetes Homelab Kit integration](https://github.com/vitofico/kubernetes-homelab-kit/blob/main/docs/dynamic-dns.md) provides a configurable Kubernetes CronJob.
 
 ## Build and check without provider traffic
 
@@ -79,7 +79,7 @@ For a Linux host with Docker and `flock`, [examples/cron.example](examples/cron.
 3. Install the reviewed entry with `crontab -e`, removing its leading `#` to enable it.
 4. Verify the next run and arrange log rotation and failure monitoring. The lock prevents overlapping invocations; providers can still impose stricter intervals.
 
-For Kubernetes, review the proposed [Homelab Kit dynamic DNS module](https://github.com/vitofico/kubernetes-homelab-kit/blob/feat/companion-tool-images-20261104/docs/dynamic-dns.md), which is pending merge on the companion-image branch. The proposed module starts suspended and stores credentials separately from image configuration.
+For Kubernetes, use the optional [Homelab Kit dynamic DNS module](https://github.com/vitofico/kubernetes-homelab-kit/blob/main/docs/dynamic-dns.md). The module starts suspended and stores credentials separately from image configuration.
 
 ## Migration
 
@@ -96,6 +96,6 @@ make build smoke  # local build plus isolated runtime check
 
 Python 3 and ShellCheck are development dependencies. Tests replace curl and send no DNS updates. CI also builds the image and checks non-root, read-only startup with missing credentials and networking disabled. Successful `main` pushes and manual workflow dispatches publish source-SHA images at `ghcr.io/<repository>/updater`; `vX.Y.Z` tags publish versioned images and `latest`. Forks inherit their own repository image namespace. This fresh source repository intentionally begins with a reviewed release baseline.
 
-For each release, review the final source, commit identity, Actions logs/artifacts, image contents, and build metadata. Verify an anonymous clone and image pull, then exercise the documented setup from a clean directory. The companion kit integration remains pending merge; switch its documentation links above to `main` after that branch is merged. Keep private audit evidence and real deployment data outside this repository.
+For each release, review the final source, commit identity, Actions logs/artifacts, image contents, and build metadata. Verify an anonymous clone and image pull, then exercise the documented setup from a clean directory. Keep private audit evidence and real deployment data outside this repository.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [Changelog.md](Changelog.md). Original source is MIT licensed; Alpine, curl, and bundled dependencies retain their upstream licenses.
