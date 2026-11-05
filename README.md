@@ -17,7 +17,7 @@ make build
 make smoke
 ```
 
-The smoke check disables networking and verifies the image runs as a non-root user and rejects missing credentials with the expected error. `make build` downloads container dependencies. During private preparation, cloning requires repository access; published image pulls also require registry access until the packages are made public.
+The smoke check disables networking and verifies the image runs as a non-root user and rejects missing credentials with the expected error. `make build` downloads container dependencies. The source repository is public; the local-build flow does not require a prebuilt registry image.
 
 ## Configure and run one real update
 
@@ -85,7 +85,7 @@ For Kubernetes, review the proposed [Homelab Kit dynamic DNS module](https://git
 
 The executable is `/usr/local/bin/update_dns.sh`; replace any override calling the former `/usr/local/bin/update_duckdns.sh`. Removing the override also uses the new image's default command. The source repository is now `vitofico/dynamic-dns-updater`; new images use the clean package path `ghcr.io/vitofico/dynamic-dns-updater/updater`.
 
-The existing `DNS_PROVIDER` and provider variables are retained. deSEC preserves IPv6 records by default; review the address-family settings before migration. Move scheduling, domains, credentials, and deployment-specific configuration into your own deployment repository. Existing private repositories and images can remain available until their consumers have verified cutover. Registry packages and repository visibility are managed independently.
+The existing `DNS_PROVIDER` and provider variables are retained. deSEC preserves IPv6 records by default; review the address-family settings before migration. Move scheduling, domains, credentials, and deployment-specific configuration into your own deployment repository. Keep the previous image digest until each consumer has verified cutover. Source repository links and registry package references are separate migration inputs.
 
 ## Development and releases
 
@@ -96,6 +96,6 @@ make build smoke  # local build plus isolated runtime check
 
 Python 3 and ShellCheck are development dependencies. Tests replace curl and send no DNS updates. CI also builds the image and checks non-root, read-only startup with missing credentials and networking disabled. Successful `main` pushes and manual workflow dispatches publish source-SHA images at `ghcr.io/<repository>/updater`; `vX.Y.Z` tags publish versioned images and `latest`. Forks inherit their own repository image namespace. This fresh source repository intentionally begins with a reviewed release baseline.
 
-Before public release, review the final source, commit identity, Actions logs/artifacts, releases, image contents, and build metadata. After the companion kit branch is merged, switch its documentation links above to `main`; retain the pending-merge label until then. Verify an authenticated pull while private. After repository and intended package visibility change, separately verify an anonymous clone and image pull, then exercise the documented setup from a clean directory. Keep private audit evidence and real deployment data outside this repository.
+For each release, review the final source, commit identity, Actions logs/artifacts, image contents, and build metadata. Verify an anonymous clone and image pull, then exercise the documented setup from a clean directory. The companion kit integration remains pending merge; switch its documentation links above to `main` after that branch is merged. Keep private audit evidence and real deployment data outside this repository.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [Changelog.md](Changelog.md). Original source is MIT licensed; Alpine, curl, and bundled dependencies retain their upstream licenses.
